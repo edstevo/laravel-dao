@@ -44,25 +44,6 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     protected $skipCriteria = false;
 
     /**
-     * Elect whether to have events for this dao
-     *
-     * @var bool
-     */
-    public $events   = true;
-
-    /**
-     * @var bool
-     */
-    public $skipEvents   = false;
-
-    /**
-     * Specify relationships which should not broadcast events
-     *
-     * @var array
-     */
-    protected $skipEventsForRelationships = [];
-
-    /**
      * Event Dispatch Repository
      *
      * @var \EdStevo\Dao\Repositories\DaoEventDispatcher
@@ -398,10 +379,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
 
         $updatedRelation    = $this->getRelationWhere($model, $relationship, [$relation->getIdField() => $relation->getId()])->first();
 
-        if (!in_array($relationship, $this->skipEventsForRelationships))
-        {
-            $this->notify()->updated()->with($model, $updatedRelation)->fire();
-        }
+        $this->notify()->updated()->with($model, $updatedRelation)->fire();
 
         return $updatedRelation;
     }
@@ -425,10 +403,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
 
         $result     = $model->$relationship()->create($data)->refresh();
 
-        if (!in_array($relationship, $this->skipEventsForRelationships))
-        {
-            $this->notify()->created()->with($model, $result)->fire();
-        }
+        $this->notify()->created()->with($model, $result)->fire();
 
         return $result;
 
@@ -492,10 +467,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     {
         $result         = $relation->delete();
 
-        if (!in_array($relationship, $this->skipEventsForRelationships))
-        {
-            $this->notify()->destroyed()->with($model, $relation)->fire();
-        }
+        $this->notify()->destroyed()->with($model, $relation)->fire();
 
         return $result;
     }
@@ -514,10 +486,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     {
         $result         = $model->$relationship()->attach($relation->getId(), $pivot_data);
 
-        if (!in_array($relationship, $this->skipEventsForRelationships))
-        {
-            $this->notify()->attached()->with($model, $relation)->fire();
-        }
+        $this->notify()->attached()->with($model, $relation)->fire();
 
         return $result;
     }
@@ -551,10 +520,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     {
         $result         = $model->$relationship()->updateExistingPivot($relation->getId(), $pivot_data);
 
-        if (!in_array($relationship, $this->skipEventsForRelationships))
-        {
-            $this->notify()->updated()->with($model, $relation)->fire();
-        }
+        $this->notify()->updated()->with($model, $relation)->fire();
 
         return $result;
     }
@@ -572,10 +538,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     {
         $result         = $model->$relationship()->detach($relation->getId());
 
-        if (!in_array($relationship, $this->skipEventsForRelationships))
-        {
-            $this->notify()->detached()->with($model, $relation)->fire();
-        }
+        $this->notify()->detached()->with($model, $relation)->fire();
 
         return $result;
     }
@@ -593,10 +556,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     {
         $result         = $model->$relationship()->toggle($relation->getId());
 
-        if (!in_array($relationship, $this->skipEventsForRelationships))
-        {
-            $this->notify()->toggled()->with($model, $relation)->fire();
-        }
+        $this->notify()->toggled()->with($model, $relation)->fire();
 
         return $result;
     }
@@ -639,30 +599,6 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     private function notFound()
     {
         throw (new ModelNotFoundException)->setModel(get_class($this->model));
-    }
-
-    /**
-     * Reset the repository skip events status
-     *
-     * @return \EdStevo\Dao\Contracts\DaoBase
-     */
-    public function resetEvents() : DaoBaseContract
-    {
-        $this->skipEvents(false);
-        return $this;
-    }
-
-    /**
-     * Set the repository to skip the events
-     *
-     * @param bool $status
-     *
-     * @return \EdStevo\Dao\Contracts\DaoBase
-     */
-    public function skipEvents(bool $status = true) : DaoBaseContract
-    {
-        $this->skipEvents   = $status;
-        return $this;
     }
 
     /**

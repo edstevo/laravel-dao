@@ -477,28 +477,6 @@ abstract class DaoCache implements DaoBaseContract, DaoCacheContract
     }
 
     /**
-     * Reset the repository skip events status
-     *
-     * @return \EdStevo\Dao\Contracts\DaoBase
-     */
-    public function resetEvents() : DaoBaseContract
-    {
-        return $this->dao->resetEvents();
-    }
-
-    /**
-     * Set the repository to skip the events
-     *
-     * @param bool $status
-     *
-     * @return \EdStevo\Dao\Contracts\DaoBase
-     */
-    public function skipEvents(bool $status = true) : DaoBaseContract
-    {
-        return $this->dao->skipEvents($status);
-    }
-
-    /**
      * @return \EdStevo\Dao\Contracts\DaoBase
      */
     public function resetScope() : DaoBaseContract

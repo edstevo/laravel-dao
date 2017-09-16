@@ -282,20 +282,4 @@ interface DaoBase
      */
     public function validate(array $rules = []) : DaoValidatorContract;
 
-    /**
-     * Reset the repository skip events status
-     *
-     * @return \EdStevo\Dao\Contracts\DaoBase
-     */
-    public function resetEvents() : DaoBase;
-
-    /**
-     * Set the repository to skip the events
-     *
-     * @param bool $status
-     *
-     * @return \EdStevo\Dao\Contracts\DaoBase
-     */
-    public function skipEvents(bool $status = true) : DaoBase;
-
 }
