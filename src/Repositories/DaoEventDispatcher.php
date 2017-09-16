@@ -145,9 +145,6 @@ class DaoEventDispatcher implements DaoEventDispatcherContract
      */
     public function fire()
     {
-        if (!$this->dao->events || $this->dao->skipEvents)
-            return;
-
         $eventName  = $this->getEventNamespace();
 
         if(class_exists($eventName))
