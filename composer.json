@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-
+        "laravel/laravel": "^5.5"
     },
     "autoload": {
 
@@ -25,8 +25,11 @@
             "EdStevo\\Dao\\Tests\\": "tests/"
         }
     },
-    "require-dev": {
-        "orchestra/testbench": "^3.5",
-        "laravel/laravel": "^5.5"
+    "extra": {
+        "laravel": {
+            "providers": [
+                "EdStevo\\Dao\\DaoServiceProvider"
+            ]
+        }
     }
 }
