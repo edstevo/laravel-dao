@@ -67,7 +67,6 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     public function __construct()
     {
         $this->criteria         = collect();
-        $this->resetEvents();
         $this->resetScope();
         $this->makeModel();
 
@@ -716,14 +715,5 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     public function validate(array $rules = []) : DaoValidatorContract
     {
         return $this->validator;
-    }
-
-    /**
-     * Inherit function
-     * Clean up class
-     */
-    public function __destruct()
-    {
-        $this->skipEvents(false);
     }
 }
