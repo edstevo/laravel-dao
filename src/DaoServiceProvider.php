@@ -1,4 +1,4 @@
-<?php
+<?php namespace EdStevo\Dao;
 
 /**
  *  Copyright (c) 2017.
