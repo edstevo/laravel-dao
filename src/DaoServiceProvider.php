@@ -33,14 +33,14 @@ class DaoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->getContracts()->each(function($contract) {
+        $this->getContracts()->each(function($daoModel) {
 
-            app()->bind('App\\Contracts\\Dao\\' . $contract, function($app) use ($contract) {
+            app()->bind('App\\Contracts\\Dao\\' . $daoModel, function($app) use ($daoModel) {
 
-                $daoRepository      = resolve('App\\Dao\\Models\\' . $contract);
-                $cacheRepository    = resolve('App\\Dao\\Caches\\' . $contract);
+                $daoRepository      = 'App\\Dao\\Models\\' . $daoModel;
+                $cacheRepository    = 'App\\Dao\\Caches\\' . $daoModel;
 
-                return new $cacheRepository($daoRepository);
+                return new $cacheRepository(resolve($daoRepository));
             });
         });
     }
