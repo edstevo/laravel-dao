@@ -149,7 +149,11 @@ class DaoEventDispatcher implements DaoEventDispatcherContract
             return;
 
         $eventName  = $this->getEventNamespace();
-        broadcast(new $eventName($this->primaryModel, $this->relatedModel))->toOthers();
+
+        if(class_exists($eventName))
+        {
+            broadcast(new $eventName($this->primaryModel, $this->relatedModel))->toOthers();
+        }
     }
 
     /**
@@ -198,12 +202,12 @@ class DaoEventDispatcher implements DaoEventDispatcherContract
      */
     private function getEventNamespace() : string
     {
-        $modelName      = $this->getClassName($this->primaryModel->getModel());
+        $modelName      = $this->getClassName($this->primaryModel->getModelName());
         $eventString    = $this->getEventsNamespace() . $modelName;
 
         if ($this->relatedModel)
         {
-            $relatedName    = $this->getClassName($this->relatedModel->getModel());
+            $relatedName    = $this->getClassName($this->relatedModel->getModelName());
             $eventString    = $eventString . "\\" . $relatedName . "\\" . $relatedName;
         } else {
             $eventString    = $eventString . "\\" . $modelName . "\\" . $modelName;

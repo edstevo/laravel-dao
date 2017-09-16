@@ -65,7 +65,7 @@ abstract class BaseModel extends Model
     /**
      * Expressive way to use the destroy method via dao repository
      *
-     * @return \EdStevo\Dao\Repositories\BaseModel
+     * @return \EdStevo\Dao\Models\BaseModel
      */
     public function daoUpdate(array $data = []) : BaseModel
     {
@@ -77,7 +77,7 @@ abstract class BaseModel extends Model
     /**
      * Expressive way to use the destroy method via dao repository
      *
-     * @return \EdStevo\Dao\Repositories\BaseModel
+     * @return \EdStevo\Dao\Models\BaseModel
      */
     public function daoIncrement(string $field = "", int $value = 1) : BaseModel
     {
@@ -127,7 +127,7 @@ abstract class BaseModel extends Model
      * @param string $relation
      * @param array  $data
      *
-     * @return \EdStevo\Dao\Repositories\BaseModel
+     * @return \EdStevo\Dao\Models\BaseModel
      */
     public function daoStoreRelation(string $relation, array $data = []) : BaseModel
     {
@@ -138,10 +138,10 @@ abstract class BaseModel extends Model
      * Expressive way to use the update relation method with this model via the dao repository
      *
      * @param string $relationship
-     * @param \EdStevo\Dao\Repositories\BaseModel $relation
+     * @param \EdStevo\Dao\Models\BaseModel $relation
      * @param array  $data
      *
-     * @return \EdStevo\Dao\Repositories\BaseModel
+     * @return \EdStevo\Dao\Models\BaseModel
      */
     public function daoUpdateRelation(string $relationship, BaseModel $relation, array $data = []) : BaseModel
     {
@@ -152,7 +152,7 @@ abstract class BaseModel extends Model
      * Expressive way to use the update pivot method with this model via the dao repository
      *
      * @param string $relationship
-     * @param \EdStevo\Dao\Repositories\BaseModel $relation
+     * @param \EdStevo\Dao\Models\BaseModel $relation
      * @param array  $data
      *
      * @return int
@@ -166,7 +166,7 @@ abstract class BaseModel extends Model
      * Expressive way to use the destroy relation method with this model via the dao repository
      *
      * @param string                           $relationship
-     * @param \EdStevo\Dao\Repositories\BaseModel $relation
+     * @param \EdStevo\Dao\Models\BaseModel $relation
      *
      * @return bool
      */
@@ -179,7 +179,7 @@ abstract class BaseModel extends Model
      * Expressive way to use the attach method with this model via the dao repository
      *
      * @param string                              $relation
-     * @param \EdStevo\Dao\Repositories\BaseModel $model
+     * @param \EdStevo\Dao\Models\BaseModel $model
      * @param array                               $pivotData
      */
     public function daoAttach(string $relation, Model $model, array $pivotData = [])
@@ -242,7 +242,7 @@ abstract class BaseModel extends Model
     /**
      * Return the dao repository related to this model
      *
-     * @return \EdStevo\Dao\Repositories\BaseModel
+     * @return \EdStevo\Dao\Models\BaseModel
      */
     public function getDaoRepository()
     {
@@ -252,7 +252,7 @@ abstract class BaseModel extends Model
     /**
      * Flush this model's dao's cache
      *
-     * @return \EdStevo\Dao\Repositories\BaseModel
+     * @return \EdStevo\Dao\Models\BaseModel
      */
     public function flushDaoCache() : BaseModel
     {
@@ -264,7 +264,7 @@ abstract class BaseModel extends Model
     /**
      * Flush this model's dao's cache
      *
-     * @return \EdStevo\Dao\Repositories\BaseModel
+     * @return \EdStevo\Dao\Models\BaseModel
      */
     public function flushModelCache() : BaseModel
     {
@@ -278,9 +278,10 @@ abstract class BaseModel extends Model
      *
      * @return string
      */
-    private function getModelName() : string
+    public function getModelName() : string
     {
-        return collect(explode('\\', get_class($this)))->last();
+        $namespace  = basename(get_class($this), ".php");
+        return collect(explode('\\', $namespace))->last();
     }
 
     /**
