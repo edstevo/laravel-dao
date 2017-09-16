@@ -1,0 +1,32 @@
+{
+    "name": "edstevo/laravel-dao",
+    "description": "Laravel Dao Package with built in caching of data objects, validation and model generation",
+    "keywords": ["laravel", "dao", "cache"],
+    "type": "Laravel Package",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "edstevo",
+            "email": "edward.stephenson@me.com"
+        }
+    ],
+    "require": {
+
+    },
+    "autoload": {
+
+        "psr-4": {
+            "EdStevo\\Dao\\": "src/"
+        }
+    },
+    "autoload-dev": {
+
+        "psr-4": {
+            "EdStevo\\Dao\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "orchestra/testbench": "^3.5",
+        "laravel/laravel": "^5.5"
+    }
+}
