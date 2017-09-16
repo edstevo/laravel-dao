@@ -10,7 +10,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
 
-class DaoServiceProvider
+class DaoServiceProvider extends ServiceProvider
 {
     protected $contractPath = 'Contracts/Dao/';
     protected $daoCachePath = 'Dao/Caches';
