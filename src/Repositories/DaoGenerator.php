@@ -22,6 +22,13 @@ class DaoGenerator implements DaoGeneratorContract
     protected $dao;
 
     /**
+     * Return the namespace of the dao's model
+     *
+     * @var string
+     */
+    protected $modelNamespace;
+
+    /**
      * Should generated models be stored in the DB?
      *
      * @var bool
@@ -30,7 +37,8 @@ class DaoGenerator implements DaoGeneratorContract
 
     public function __construct(DaoBase $dao)
     {
-        $this->dao      = $dao;
+        $this->dao              = $dao;
+        $this->modelNamespace   = get_class($this->dao->getModel());
         $this->setPersist();
     }
 
@@ -59,10 +67,10 @@ class DaoGenerator implements DaoGeneratorContract
     {
         if ($this->persist)
         {
-            return factory($this->dao->getModel())->create($data);
+            return factory($this->modelNamespace)->create($data);
         }
 
-        return factory($this->dao->getModel())->make($data);
+        return factory($this->modelNamespace)->make($data);
     }
 
     /**
@@ -77,10 +85,10 @@ class DaoGenerator implements DaoGeneratorContract
     {
         if ($this->persist)
         {
-            return factory($this->dao->getModel(), $number)->create($data);
+            return factory($this->modelNamespace, $number)->create($data);
         }
 
-        return factory($this->dao->getModel(), $number)->make($data);
+        return factory($this->modelNamespace, $number)->make($data);
     }
 
 }
