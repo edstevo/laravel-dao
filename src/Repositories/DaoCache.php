@@ -463,7 +463,7 @@ abstract class DaoCache implements DaoBaseContract, DaoCacheContract
      */
     public function generate(bool $persist = true) : DaoGeneratorContract
     {
-        return $this->dao->validate($persist);
+        return $this->dao->generate($persist);
     }
 
     /**
