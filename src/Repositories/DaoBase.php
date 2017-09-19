@@ -396,7 +396,13 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
     {
         $data       = $this->cleanData($data, $model->$relationship()->getRelated());
 
-        $foreignKey         = $model->$relationship()->getQualifiedForeignKey();
+        if(method_exists($model->$relationship(), 'getQualifiedForeignKey'))
+        {
+            $foreignKey     = $model->$relationship()->getQualifiedForeignKey();
+        } else {
+            $foreignKey     = $model->$relationship()->getQualifiedForeignKeyName();
+        }
+
         $foreignKey         = explode(".", $foreignKey)[1];
         $data[$foreignKey]  = $model->getId();
 
