@@ -15,6 +15,7 @@ use EdStevo\Dao\Models\BaseModel;
 use EdStevo\Dao\Repositories\DaoCriteria as DaoCriteriaBase;
 use EdStevo\Dao\Exceptions\DaoException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -394,24 +395,25 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
      */
     public function storeRelation(BaseModel $model, string $relationship, array $data = []) : BaseModel
     {
-        $data       = $this->cleanData($data, $model->$relationship()->getRelated());
+        $data           = $this->cleanData($data, $model->$relationship()->getRelated());
 
-        if(method_exists($model->$relationship(), 'getQualifiedForeignKey'))
+        if ($model->$relationship() instanceof BelongsTo || $model->$relationship() instanceof BelongsToMany)
         {
             $foreignKey     = $model->$relationship()->getQualifiedForeignKey();
-        } else {
-            $foreignKey     = $model->$relationship()->getQualifiedForeignKeyName();
-        }
 
-        $foreignKey         = explode(".", $foreignKey)[1];
-        $data[$foreignKey]  = $model->getId();
+        } else {
+
+            $foreignKey     = $model->$relationship()->getQualifiedForeignKeyName();
+
+            $foreignKey         = explode(".", $foreignKey)[1];
+            $data[$foreignKey]  = $model->getId();
+        }
 
         $result     = $model->$relationship()->create($data)->refresh();
 
         $this->notify()->created()->with($model, $result)->fire();
 
         return $result;
-
     }
 
     /**
