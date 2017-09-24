@@ -40,16 +40,13 @@ class DaoServiceProvider extends ServiceProvider
 
             $class  = $this->getContractNamespace($daoModel);
 
-            if (class_exists($class))
-            {
-                app()->bind($class, function($app) use ($daoModel) {
+            app()->bind($class, function($app) use ($daoModel) {
 
-                    $daoRepository      = $this->getDaoNamespace($daoModel);
-                    $cacheRepository    = $this->getCacheNamespace($daoModel);
+                $daoRepository      = $this->getDaoNamespace($daoModel);
+                $cacheRepository    = $this->getCacheNamespace($daoModel);
 
-                    return new $cacheRepository(resolve($daoRepository));
-                });
-            }
+                return new $cacheRepository(resolve($daoRepository));
+            });
         });
     }
 
