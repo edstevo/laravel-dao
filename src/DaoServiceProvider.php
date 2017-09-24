@@ -57,9 +57,13 @@ class DaoServiceProvider extends ServiceProvider
      */
     private function getContracts() : Collection
     {
-        return collect(scandir(app_path($this->contractPath)))->map(function($contract) {
-            return $this->getContractName($contract);
-        });
+        return collect(scandir(app_path($this->contractPath)))
+            ->filter(function($contract) {
+                return (!is_dir($contract));
+            })
+            ->map(function($contract) {
+                return $this->getContractName($contract);
+            });
     }
 
     /**
