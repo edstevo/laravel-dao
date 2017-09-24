@@ -651,7 +651,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
      *
      * @return \EdStevo\Dao\Contracts\DaoBase
      */
-    private function applyCriteria() : DaoBaseContract
+    public function applyCriteria() : DaoBaseContract
     {
         if($this->skipCriteria === true)
             return $this;
