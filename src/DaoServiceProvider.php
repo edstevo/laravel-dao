@@ -12,9 +12,12 @@ use Illuminate\Support\ServiceProvider;
 
 class DaoServiceProvider extends ServiceProvider
 {
+    /**
+     * Path To Dao Contracts
+     *
+     * @var string
+     */
     protected $contractPath = 'Contracts/Dao/';
-    protected $daoCachePath = 'Dao/Caches';
-    protected $daoModelPath = 'Dao/Models';
 
     /**
      * Bootstrap any application services.
@@ -35,13 +38,18 @@ class DaoServiceProvider extends ServiceProvider
     {
         $this->getContracts()->each(function($daoModel) {
 
-            app()->bind('App\\Contracts\\Dao\\' . $daoModel, function($app) use ($daoModel) {
+            $class  = $this->getContractNamespace($daoModel);
 
-                $daoRepository      = 'App\\Dao\\Models\\' . $daoModel;
-                $cacheRepository    = 'App\\Dao\\Caches\\' . $daoModel;
+            if (class_exists($class))
+            {
+                app()->bind($class, function($app) use ($daoModel) {
 
-                return new $cacheRepository(resolve($daoRepository));
-            });
+                    $daoRepository      = $this->getDaoNamespace($daoModel);
+                    $cacheRepository    = $this->getCacheNamespace($daoModel);
+
+                    return new $cacheRepository(resolve($daoRepository));
+                });
+            }
         });
     }
 
@@ -52,7 +60,7 @@ class DaoServiceProvider extends ServiceProvider
      */
     private function getContracts() : Collection
     {
-        return collect(Storage::disk('app')->allFiles($this->contractPath))->map(function($contract) {
+        return collect(scandir(app_path($this->contractPath)))->map(function($contract) {
             return $this->getContractName($contract);
         });
     }
@@ -67,5 +75,41 @@ class DaoServiceProvider extends ServiceProvider
     private function getContractName(string $contract)
     {
         return str_replace(".php", "", basename($contract));
+    }
+
+    /**
+     * Return the Contract Namespace of a Dao Model
+     *
+     * @param $daoModel
+     *
+     * @return string
+     */
+    private function getContractNamespace($daoModel)
+    {
+        return 'App\\Contracts\\Dao\\' . $daoModel;
+    }
+
+    /**
+     * Return the Cache Namespace of a Dao Model
+     *
+     * @param $daoModel
+     *
+     * @return string
+     */
+    private function getCacheNamespace($daoModel)
+    {
+        return 'App\\Dao\\Caches\\' . $daoModel;
+    }
+
+    /**
+     * Return the Dao Namespace of a Dao Model
+     *
+     * @param $daoModel
+     *
+     * @return string
+     */
+    private function getDaoNamespace($daoModel)
+    {
+        return 'App\\Dao\\Models\\' . $daoModel;
     }
 }

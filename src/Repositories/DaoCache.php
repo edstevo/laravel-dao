@@ -591,6 +591,18 @@ abstract class DaoCache implements DaoBaseContract, DaoCacheContract
     }
 
     /**
+     * Get the Class Name from a namespace
+     *
+     * @param $namespace
+     *
+     * @return mixed
+     */
+    private function getCacheTagName()
+    {
+        return basename($this->dao->getTable());
+    }
+
+    /**
      * Return the cache key for a single record
      *
      * @param $id
@@ -612,18 +624,6 @@ abstract class DaoCache implements DaoBaseContract, DaoCacheContract
         return "_" . $this->dao->getCriteria()->map(function($class) {
                 return $this->getCacheTagName();
             })->implode("_");
-    }
-
-    /**
-     * Get the Class Name from a namespace
-     *
-     * @param $namespace
-     *
-     * @return mixed
-     */
-    private function getCacheTagName()
-    {
-        return basename($this->dao->getTable());
     }
 
     /**
