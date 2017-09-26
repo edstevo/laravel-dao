@@ -603,7 +603,7 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
      *
      * @throws  \Illuminate\Database\Eloquent\ModelNotFoundException
      */
-    private function notFound()
+    public function notFound()
     {
         throw (new ModelNotFoundException)->setModel(get_class($this->model));
     }
