@@ -73,7 +73,7 @@ class DaoValidator implements DaoValidatorContract
      */
     public function update(array $rules = [])
     {
-        return $this->validate(array_merge($this->dao->getStoreRules(), $rules));
+        return $this->validate(array_merge($this->dao->getUpdateRules(), $rules));
     }
 
     /**
