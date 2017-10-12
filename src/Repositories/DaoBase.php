@@ -722,6 +722,6 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
      */
     public function validate(array $rules = []) : DaoValidatorContract
     {
-        return $this->validator;
+        return $this->validator->setRules($rules);
     }
 }

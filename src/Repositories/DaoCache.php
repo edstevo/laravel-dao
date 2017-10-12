@@ -180,7 +180,7 @@ abstract class DaoCache implements DaoBaseContract, DaoCacheContract
      * @param \EdStevo\Dao\Models\BaseModel   $model
      * @param array     $data
      * @param string $attribute
-     *
+     *s
      * @return \EdStevo\Dao\Models\BaseModel
      */
     public function update(BaseModel $model, array $data) : BaseModel

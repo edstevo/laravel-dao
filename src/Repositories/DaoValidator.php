@@ -20,9 +20,31 @@ class DaoValidator implements DaoValidatorContract
      */
     protected $dao;
 
+    /**
+     * Custom Validation Rules
+     *
+     * @var array
+     */
+    protected $rules;
+
     public function __construct(DaoBase $dao)
     {
         $this->dao      = $dao;
+        $this->rules    = [];
+    }
+
+    /**
+     * Set other rules on this validator
+     *
+     * @param $rules
+     *
+     * @return \EdStevo\Dao\Repositories\DaoValidator
+     */
+    public function setRules($rules) : DaoValidator
+    {
+        $this->rules    = $rules;
+
+        return $this;
     }
 
     /**
@@ -63,6 +85,8 @@ class DaoValidator implements DaoValidatorContract
         {
             $data   = request()->all();
         }
+
+        $rules  = array_merge($rules, $this->rules);
 
         return Validator::make($data, $rules)->validate();
     }
