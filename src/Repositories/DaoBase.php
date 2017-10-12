@@ -720,8 +720,8 @@ abstract class DaoBase implements DaoCriteriaContract, DaoBaseContract
      *
      * @return \EdStevo\Dao\Contracts\DaoValidator
      */
-    public function validate(array $rules = []) : DaoValidatorContract
+    public function validate(array $data = []) : DaoValidatorContract
     {
-        return $this->validator->setRules($rules);
+        return $this->validator->setData($data);
     }
 }

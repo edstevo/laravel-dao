@@ -21,16 +21,16 @@ class DaoValidator implements DaoValidatorContract
     protected $dao;
 
     /**
-     * Custom Validation Rules
+     * Custom Validation Data
      *
      * @var array
      */
-    protected $rules;
+    protected $data;
 
     public function __construct(DaoBase $dao)
     {
         $this->dao      = $dao;
-        $this->rules    = [];
+        $this->data     = [];
     }
 
     /**
@@ -40,9 +40,14 @@ class DaoValidator implements DaoValidatorContract
      *
      * @return \EdStevo\Dao\Repositories\DaoValidator
      */
-    public function setRules($rules) : DaoValidator
+    public function setData($data) : DaoValidator
     {
-        $this->rules    = $rules;
+        if (empty($data))
+        {
+            $this->data     = request()->all();
+        } else {
+            $this->data     = $data;
+        }
 
         return $this;
     }
@@ -50,13 +55,13 @@ class DaoValidator implements DaoValidatorContract
     /**
      * Validate the storing of a model
      *
-     * @param array $data
+     * @param array $rules
      *
      * @return mixed
      */
-    public function store(array $data = [])
+    public function store(array $rules = [])
     {
-        return $this->validate($this->dao->getStoreRules(), $data);
+        return $this->validate(array_merge($this->dao->getStoreRules(), $rules));
     }
 
     /**
@@ -66,9 +71,9 @@ class DaoValidator implements DaoValidatorContract
      *
      * @return mixed
      */
-    public function update(array $data = [])
+    public function update(array $rules = [])
     {
-        return $this->validate($this->dao->getUpdateRules(), $data);
+        return $this->validate(array_merge($this->dao->getStoreRules(), $rules));
     }
 
     /**
@@ -79,16 +84,9 @@ class DaoValidator implements DaoValidatorContract
      *
      * @return mixed
      */
-    private function validate(array $rules, array $data = [])
+    private function validate(array $rules)
     {
-        if (empty($data))
-        {
-            $data   = request()->all();
-        }
-
-        $rules  = array_merge($rules, $this->rules);
-
-        return Validator::make($data, $rules)->validate();
+        return Validator::make($this->data, $rules)->validate();
     }
 
 }
